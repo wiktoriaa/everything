@@ -1,0 +1,13 @@
+Pułapka sudo.
+Skrypt uruchamiany jest po uprzednim wykonaniu skryptu main.sh lub ręcznym zmodyfikowaniu zmiennej $PATH.
+Hasło wpisane do fake sudo jest zapisywane w pliku log.txt. Program po zakończeniu pokazuje jeden fake error. 
+Kompilacja:
+gcc ex_sudo.c -o sudo
+
+Uruchamianie:
+./main.sh
+sudo argumenty
+
+Wyjście:
+exit
+
