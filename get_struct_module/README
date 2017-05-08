@@ -1,4 +1,4 @@
-This module create misc char device whose write function returns pointer to struct module and write some informations about module in kernel logs.
+This module create misc char device which write function returns pointer to struct module and write some informations about module in kernel logs.
 To use device you haven`t to be root but to load module you must. 
 Using example:
 echo name_module > /dev/new_misc_device
