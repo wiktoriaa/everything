@@ -8,10 +8,8 @@ ssize_t n_misc_write (struct file *, const char __user *, size_t, loff_t *);
 int n_misc_open (struct inode *, struct file *);
 
 struct miscdevice n_device;
-struct file_operations *mfops = {
+struct file_operations mfops = {
   .open = n_misc_open,
-  //.read = n_misc_read,
-  .write = n_misc_write,
 };
 int err;
 
@@ -19,7 +17,7 @@ static int __init create_device(void)
 {
   n_device.minor = MISC_DYNAMIC_MINOR;
   n_device.name = MY_DEV_NAME;
-  n_device.fops = mfops;
+  n_device.fops = &mfops;
   n_device.mode = 0777;
   err = misc_register(&n_device);
   if (err) {
@@ -33,12 +31,6 @@ static void __exit destroy_device(void)
 {
   if(!err)
     misc_deregister(&n_device);
-}
-
-ssize_t n_misc_write(struct file *file, const char __user *name_mod, size_t size, loff_t *loff)
-{
-  modp = find_module(name_mod);
-  printk(KERN_INFO "Preparing to delete %s", modp->mkobj.kobj.name);
 }
 
 int n_misc_open(struct inode *node, struct file *file)
