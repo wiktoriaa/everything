@@ -1,0 +1,3 @@
+This device is writed for fun. Its simple device which returnes lenny face when you read from this device, eg.
+cat /dev/lenny
+Device has 0777 mode.
