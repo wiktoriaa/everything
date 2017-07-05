@@ -37,7 +37,7 @@ ssize_t write_devs(struct file *file, char __user *buff, size_t size, loff_t *lo
 struct file_operations fops = {
   .open = open_devs,
   .read = read_devs,
-  //.write = write_devs,
+  /*.write = write_devs,*/
   .release = release_devs,
 };
 
