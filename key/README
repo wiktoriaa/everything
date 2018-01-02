@@ -1,0 +1,5 @@
+This is program to translate keycodes to key names.
+Compile:
+gcc keycode_to_key.c -o key
+Run:
+./key file_with_input file_to_output
